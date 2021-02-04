@@ -1,14 +1,15 @@
-base: ubuntu:18.04
-language: c++
+base: guardstrike/fuzzx_base
+environment:
+  - ENV1="CC=clang"
+  - ENV2="CXX=clang++"
 setup:
-  - sudo chmod 775 ./build.sh
   - sudo apt-get -y update
   - sudo apt-get -y install git make
-  - ./build.sh
-targets:
-  - name: heartbleed
-    harness:
-      binary: ./target
-    sanitizers:
-      address: detect_stack_use_after_return=1
-
+language: c++
+target:
+  name: heartbleed
+  setup:
+    - cd openssl && CC="clang -g -fsanitize=address,fuzzer-no-link" ./config && make clean && make
+    - clang++ -g ./target.cc -fsanitize=address,fuzzer openssl/libssl.a  openssl/libcrypto.a -std=c++17 -DCERT_PATH=\"$PWD/runtime\" -I openssl/include -lstdc++fs -ldl -lstdc++ -o ./target
+  corpus: ./corpus
+  harness: ./target
