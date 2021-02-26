@@ -1,4 +1,4 @@
-base: guardstrike/fuzzx_base
+base: ubuntu:18.04
 environment:
   - CC=clang
   - CXX=clang++
