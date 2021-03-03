@@ -4,12 +4,12 @@ environment:
   - CXX=clang++
 setup:
   - sudo apt-get -y update
-  - sudo apt-get -y install git make
+  - sudo apt-get -y install git clang make 
 language: c++
 target:
   name: heartbleed
   setup:
-    - cd openssl && CC="$CC -g -fsanitize=address,fuzzer-no-link" ./config && make clean && make
+    - cd openssl && CC="$CC -g -fsanitize=address,fuzzer-no-link" ./config && make clean && make && cd ..
     - $CXX -g ./target.cc -fsanitize=address,fuzzer openssl/libssl.a  openssl/libcrypto.a -std=c++17 -DCERT_PATH=\"$PWD/runtime\" -I openssl/include -lstdc++fs -ldl -lstdc++ -o ./target
   corpus: ./corpus
   harness: ./target
