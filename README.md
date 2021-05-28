@@ -4,3 +4,4 @@ This repo contains the openssl source code (V1.0.1f), which has a Heartbleed sec
 
 You can use [FuzzX](https://guardstrikelab.gitbook.io/fuzzx/) platform to run the fuzzing process.
 
+app test
